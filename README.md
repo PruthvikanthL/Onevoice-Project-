@@ -106,7 +106,7 @@ src/
 
 🛠️ Setup & Run
 1️⃣ Clone the project
-git clone https://github.com/your-username/one-voice.git
+git clone https://github.com/PruthvikanthL/one-voice.git
 cd one-voice
 
 2️⃣ Configure PostgreSQL
