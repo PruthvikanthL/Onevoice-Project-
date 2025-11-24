@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Individual Login - One Voice</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+          --teal: #00B5B5;
+          --orange: #FF6E2F;
+          --navy: #0C3A63;
+          --glass: rgba(255,255,255,0.06);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif }
+        body,html { height:100%; background:#0e0e0e; color:#fff; overflow:hidden }
+        .container {
+          display:flex; align-items:center; justify-content:center;
+          height:100vh; width:100%;
+          background: radial-gradient(circle at top left,#151515 0%,#0e0e0e 70%);
+          position:relative;
+        }
+        .login-box {
+          background: var(--glass);
+          padding: 40px;
+          border-radius: 22px;
+          width: 380px;
+          box-shadow: 0 12px 32px rgba(0,0,0,0.6);
+          backdrop-filter: blur(14px);
+          animation: fadeInUp 1s ease both;
+        }
+        @keyframes fadeInUp { from{opacity:0;transform:translateY(40px)} to{opacity:1;transform:translateY(0)} }
+        .login-box h2 {
+          text-align:center;
+          margin-bottom:25px;
+          font-size:1.8rem;
+          font-weight:700;
+          background:linear-gradient(90deg,var(--teal),var(--orange));
+          -webkit-background-clip:text;
+          -webkit-text-fill-color:transparent;
+        }
+        .input-group { margin-bottom:20px }
+        .input-group label { display:block; font-size:0.9rem; margin-bottom:6px; font-weight:600; color:#eee; }
+        .input-group input {
+          width:100%; padding:12px; border:none; border-radius:10px;
+          background:rgba(255,255,255,0.12); color:#fff; font-size:0.95rem;
+        }
+        .input-group input:focus { outline:2px solid var(--teal) }
+        .btn {
+          width:100%; padding:14px; border:none; border-radius:12px;
+          background:linear-gradient(90deg,var(--teal),var(--orange));
+          font-size:1rem; font-weight:700; color:#fff; cursor:pointer;
+          transition:transform 0.2s;
+        }
+        .btn:hover { transform:scale(1.04) }
+        .links { text-align:center; margin-top:20px; }
+        .links a { color:var(--orange); text-decoration:none; font-size:0.9rem; font-weight:600; }
+        .links a:hover { text-decoration:underline }
+        .side-banner {
+          position:absolute; left:50px; top:50%; transform:translateY(-50%);
+          max-width:420px;
+        }
+        .side-banner img { width:120px; margin-bottom:18px; filter:drop-shadow(0 6px 12px rgba(0,0,0,0.5)) }
+        .side-banner h1 {
+          font-size:2rem; font-weight:700; margin-bottom:12px;
+          background:linear-gradient(90deg,var(--teal),var(--orange));
+          -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+        }
+        .side-banner p { font-size:1rem; opacity:0.9; line-height:1.5 }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="side-banner">
+        <img src="/images/logocircle.jpg" alt="One Voice logo">
+        <h1>Individual Login</h1>
+        <p>"Your voice matters — raise complaints, track progress, and be a part of the clean village movement."</p>
+    </div>
+
+    <div class="login-box">
+        <h2>Welcome Back 👋</h2>
+
+        <form method="post" action="/perform_login">
+            <div class="input-group">
+                <label for="username">Email</label>
+
+                <input type="text" id="username" name="username" placeholder="Enter your email" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+            <button type="submit" class="btn">Login</button>
+        </form>
+        <div class="links">
+            <p>Don’t have an account? <a href="/individual-register.html">Register here</a></p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

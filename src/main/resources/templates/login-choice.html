@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One Voice - Choose Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+          --teal: #00e0c6;
+          --orange: #ff9950;
+          --bg-dark: #0b1117;
+          --glass: rgba(255, 255, 255, 0.07);
+          --border: rgba(255, 255, 255, 0.12);
+          --text-light: #e6e6e6;
+        }
+
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+          height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background: radial-gradient(circle at 30% 30%, #11202a, #05080c 80%);
+          color: var(--text-light);
+          overflow: hidden;
+          position: relative;
+        }
+
+        /* background orbs */
+        .orb {
+          position: absolute;
+          border-radius: 50%;
+          filter: blur(100px);
+          opacity: 0.5;
+          animation: float 18s infinite ease-in-out alternate;
+          z-index: 0;
+        }
+        .orb.teal { background: var(--teal); width: 380px; height: 380px; top: -8%; left: -10%; }
+        .orb.orange { background: var(--orange); width: 320px; height: 320px; bottom: -8%; right: -8%; animation-delay: 4s; }
+
+        @keyframes float {
+          from { transform: translateY(0) scale(1); opacity: 0.6; }
+          to { transform: translateY(-40px) scale(1.05); opacity: 0.8; }
+        }
+
+        /* wrapper */
+        .wrapper {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 70px;
+          width: 90%;
+          max-width: 1150px;
+          z-index: 2;
+        }
+
+        .info {
+          flex: 1;
+          max-width: 400px;
+          animation: fadeInLeft 1.2s ease both;
+        }
+
+        @keyframes fadeInLeft {
+          from { opacity: 0; transform: translateX(-60px); }
+          to { opacity: 1; transform: translateX(0); }
+        }
+
+        .info h2 {
+          font-size: 2.2rem;
+          font-weight: 700;
+          margin-bottom: 16px;
+          background: linear-gradient(90deg, var(--teal), var(--orange));
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+
+        .info p {
+          color: #cfd2d4;
+          line-height: 1.6;
+          font-size: 1rem;
+          margin-bottom: 12px;
+        }
+
+        .tagline {
+          font-style: italic;
+          color: #b8b8b8;
+          font-size: 0.95rem;
+          margin-top: 10px;
+        }
+
+        .container {
+          flex: 1;
+          text-align: center;
+          padding: 60px 45px;
+          border-radius: 20px;
+          background: var(--glass);
+          border: 1px solid var(--border);
+          backdrop-filter: blur(14px);
+          box-shadow: 0 8px 32px rgba(0,0,0,0.55), inset 0 0 20px rgba(255,255,255,0.04);
+          animation: fadeInUp 1s ease both;
+          position: relative;
+          overflow: hidden;
+        }
+
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(50px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container::before {
+          content: "";
+          position: absolute;
+          top: -50%;
+          left: -50%;
+          width: 200%;
+          height: 200%;
+          background: conic-gradient(from 0deg, transparent 0%, rgba(0,255,255,0.2) 25%, transparent 50%, rgba(255,160,80,0.2) 75%, transparent 100%);
+          animation: rotate 7s linear infinite;
+          z-index: 0;
+        }
+
+        @keyframes rotate {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+
+        .container * { position: relative; z-index: 2; }
+
+        .logo {
+          width: 90px;
+          height: 90px;
+          border-radius: 50%;
+          margin-bottom: 12px;
+          box-shadow: 0 0 20px rgba(0,255,255,0.35);
+        }
+
+        h1 {
+          font-size: 28px;
+          font-weight: 700;
+          background: linear-gradient(90deg, var(--teal), var(--orange));
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          margin-bottom: 10px;
+        }
+
+        p.slogan {
+          font-size: 15px;
+          color: #d0d0d0;
+          margin-bottom: 38px;
+        }
+
+        .btn {
+          width: 100%;
+          padding: 15px;
+          margin: 10px 0;
+          border: none;
+          border-radius: 12px;
+          font-size: 16px;
+          font-weight: 600;
+          color: white;
+          background: linear-gradient(90deg, var(--teal), var(--orange));
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+          transform: scale(1.04);
+          box-shadow: 0 0 18px rgba(0,255,255,0.3);
+        }
+    </style>
+</head>
+<body>
+
+<div class="orb teal"></div>
+<div class="orb orange"></div>
+
+<div class="wrapper">
+    <div class="info">
+        <h2>Empowering Every Voice, Building Better Villages</h2>
+        <p>One Voice bridges citizens and Panchayaths — enabling faster reporting, cleaner surroundings, and stronger communities.</p>
+        <p>Join the movement for a cleaner, connected tomorrow.</p>
+        <p class="tagline">Together, we make every voice count. 🌿</p>
+    </div>
+
+    <div class="container">
+        <img src="/images/logocircle.jpg" alt="One Voice Logo" class="logo">
+        <h1>One Voice</h1>
+        <p class="slogan">Citizen Connect Platform</p>
+
+        <button class="btn" onclick="window.location.href='/individual-login.html'">
+            👤 Login as Individual
+        </button>
+
+        <button class="btn" onclick="window.location.href='/panchayath-login.html'">
+            🏛️ Login as Panchayath
+        </button>
+    </div>
+</div>
+</body>
+</html>

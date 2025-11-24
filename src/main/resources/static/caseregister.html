@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Complaint - One Voice</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root{--teal:#00B5B5;--orange:#FF6E2F;--navy:#0C3A63;--glass:rgba(255,255,255,0.06);}
+        *{box-sizing:border-box;margin:0;padding:0;font-family:'Poppins',sans-serif;}
+        body,html{height:100%;background:#0e0e0e;color:#fff;overflow-x:hidden; position:relative;}
+        nav{display:flex; justify-content:space-between; align-items:center; padding:18px 40px; gap:10px; z-index:120; background: rgba(255,255,255,0.03); backdrop-filter: blur(10px); position:fixed; width:100%;}
+        nav .logo img{ height:44px; display:block; }
+        nav ul{ list-style:none; display:flex; gap:28px; align-items:center }
+        nav a{ color:#fff; text-decoration:none; font-weight:600; position:relative }
+        nav a:hover::after{ width:100%; }
+        .hero{ min-height:100vh; display:flex; align-items:center; justify-content:center; padding:100px 20px; position:relative; background: radial-gradient(ellipse at top left, #151515 0%, #0e0e0e 70%); overflow:hidden; }
+        .glass-container{ width:500px; max-width:90%; z-index:20; position:relative; padding:42px 34px; border-radius:26px; color:#fff; background: var(--glass); backdrop-filter: blur(18px); box-shadow: 0 12px 32px rgba(0,0,0,0.6); animation: fadeInUp 1.1s ease both; }
+        @keyframes fadeInUp { from{opacity:0; transform:translateY(30px)} to{opacity:1; transform:none} }
+        .glass-container h1{ color: var(--teal); font-size:2rem; margin-bottom:20px;text-align:center;}
+        .glass-container input, .glass-container textarea, .glass-container button{width:100%; padding:12px 14px; margin:10px 0; border-radius:8px; border:none; font-size:1rem; font-family:'Poppins',sans-serif;}
+        .glass-container input, .glass-container textarea{ background: rgba(255,255,255,0.1); color:#fff;}
+        .glass-container button{ background: linear-gradient(90deg, var(--teal), var(--orange)); color:#fff; font-weight:600; cursor:pointer; transition:0.3s; }
+        .glass-container button:hover{ transform: scale(1.05);}
+        .note{ font-size:0.85rem; color:rgba(255,255,255,0.6); margin-top:-5px }
+
+        /* Floating elements container */
+        .floating-elements{
+            position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:10;
+        }
+        .floating{
+            position:absolute; width:50px; height:50px; opacity:0.8; animation: floatAnim linear infinite;
+        }
+        .leaf{ background: url('https://img.icons8.com/emoji/48/leaf-emoji.png') no-repeat center/contain; }
+        .broom{ background: url('https://img.icons8.com/emoji/48/broom-emoji.png') no-repeat center/contain; }
+        .trash{ background: url('https://img.icons8.com/emoji/48/wastebasket-emoji.png') no-repeat center/contain; }
+
+        @keyframes floatAnim{
+            0%{transform: translateY(0) rotate(0deg);}
+            50%{transform: translateY(-50px) rotate(20deg);}
+            100%{transform: translateY(0) rotate(0deg);}
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo"><img src="/images/logocircle.jpg" alt="One Voice Logo"></div>
+    <ul>
+        <li><a href="/individuals/dashboard">Home</a></li>
+        <li><a href="/complaints/status">Complaint Status</a></li>
+        <li><a href="/events">Events/News</a></li>
+        <li><a href="@{/talktoai}">Talk with AI</a></li>
+    </ul>
+</nav>
+
+<section class="hero">
+    <div class="glass-container">
+        <h1>Register Your Complaint</h1>
+        <form id="complaintForm" enctype="multipart/form-data">
+            <input type="text" name="villageName" placeholder="Village Name" required>
+            <input type="text" name="areaName" placeholder="Area / Street / Ward" required>
+            <textarea name="issueDescription" placeholder="Describe the issue" rows="4" required></textarea>
+            <label>Upload Image (optional)</label>
+            <input type="file" name="image" accept="image/*">
+            <label>Upload Video (optional)</label>
+            <input type="file" name="video" accept="video/*">
+            <input type="hidden" name="latitude" id="latitude">
+            <input type="hidden" name="longitude" id="longitude">
+            <button type="button" onclick="getLocation()">Use My Current Location</button>
+            <button type="submit">Submit Complaint</button>
+            <div class="note">Click 'Use My Current Location' to auto-fill coordinates.</div>
+        </form>
+    </div>
+
+
+    <div class="floating-elements">
+        <div class="floating leaf" style="top:10%; left:5%; animation-duration:8s;"></div>
+        <div class="floating broom" style="top:30%; left:80%; animation-duration:10s;"></div>
+        <div class="floating trash" style="top:70%; left:20%; animation-duration:12s;"></div>
+        <div class="floating leaf" style="top:50%; left:50%; animation-duration:9s;"></div>
+        <div class="floating broom" style="top:20%; left:40%; animation-duration:11s;"></div>
+    </div>
+</section>
+
+<script>
+    function getLocation(){
+        if(navigator.geolocation){
+            navigator.geolocation.getCurrentPosition(function(position){
+                document.getElementById('latitude').value = position.coords.latitude;
+                document.getElementById('longitude').value = position.coords.longitude;
+                alert("Location captured! Latitude: "+position.coords.latitude+" , Longitude: "+position.coords.longitude);
+            });
+        } else { alert("Geolocation not supported."); }
+    }
+
+    const form = document.getElementById("complaintForm");
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        try {
+            const response = await fetch("/complaints/add", { method:"POST", body:formData });
+            if(response.ok){
+                const complaint = await response.json();
+                sessionStorage.setItem("complaint", JSON.stringify(complaint));
+                window.location.href = "casesuccess.html";
+            } else { window.location.href = "casefailure.html"; }
+        } catch(err){ console.error(err); window.location.href = "casefailure.html"; }
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complaint Registered Successfully</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body, html{margin:0;padding:0;font-family:'Poppins',sans-serif;background:#0e0e0e;color:#fff;}
+    .container{max-width:600px;margin:120px auto;padding:40px;background:rgba(255,255,255,0.06);backdrop-filter:blur(18px);border-radius:26px;text-align:center;}
+    h1{color:#00B5B5;margin-bottom:20px;}
+    p{margin:10px 0;font-size:1rem;color:#fff;}
+    .btn{margin-top:20px;padding:12px 20px;background:linear-gradient(90deg,#00B5B5,#FF6E2F);border:none;border-radius:8px;color:#fff;font-weight:600;cursor:pointer;text-decoration:none;}
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>✅ Complaint Registered Successfully!</h1>
+  <div id="complaint-details">
+  </div>
+  <a href="/individuals/dashboard" class="btn">Back to Dashboard</a>
+</div>
+
+<script>
+  const complaint = JSON.parse(sessionStorage.getItem("complaint"));
+  if(complaint){
+      document.getElementById("complaint-details").innerHTML = `
+          <p><strong>ID:</strong> ${complaint.id}</p>
+          <p><strong>Village:</strong> ${complaint.villageName}</p>
+          <p><strong>Area:</strong> ${complaint.areaName}</p>
+          <p><strong>Description:</strong> ${complaint.issueDescription}</p>
+          ${complaint.imagePath ? `<p><strong>Image Uploaded:</strong> Yes</p>` : ''}
+          ${complaint.videoPath ? `<p><strong>Video Uploaded:</strong> Yes</p>` : ''}
+          <p><strong>Coordinates:</strong> (${complaint.latitude}, ${complaint.longitude})</p>
+      `;
+  } else {
+      document.getElementById("complaint-details").innerHTML = "<p>Complaint details not found.</p>";
+  }
+</script>
+</body>
+</html>

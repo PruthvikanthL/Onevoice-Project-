@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Panchayath Complaints</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <style>
+    body { font-family:'Poppins',sans-serif; background:#0e0e0e; color:#fff; padding:40px; }
+    table { width:100%; border-collapse:collapse; margin-top:20px; }
+    th,td { padding:10px; border-bottom:1px solid rgba(255,255,255,0.2); text-align:left; vertical-align:top; }
+    th { color:#00B5B5; }
+    input[type=text]{ padding:10px; width:300px; border:none; border-radius:8px; }
+    button { background:#00B5B5; color:#fff; border:none; padding:8px 14px; border-radius:8px; cursor:pointer; }
+    #map { height:400px; margin-top:30px; border-radius:10px; }
+    img { border-radius:10px; border:1px solid rgba(255,255,255,0.2); }
+    select, textarea { border-radius:8px; border:none; padding:6px; font-family:'Poppins',sans-serif; }
+    textarea { width:200px; height:60px; resize:none; }
+  </style>
+</head>
+<body>
+
+<h1>Panchayath Complaints</h1>
+
+<form method="get" action="/panchayath/complaints">
+  <input type="text" name="search" placeholder="Search by village, area, or issue" th:value="${search}">
+  <button type="submit">Search</button>
+</form>
+
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Village</th>
+    <th>Area</th>
+    <th>Issue</th>
+    <th>Image</th>
+    <th>Status</th>
+    <th>Email</th>
+    <th>Map</th>
+    <th>Mail</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="c : ${complaints}">
+    <td th:text="${c.id}"></td>
+    <td th:text="${c.villageName}"></td>
+    <td th:text="${c.areaName}"></td>
+    <td th:text="${c.issueDescription}"></td>
+
+
+    <td>
+      <img th:if="${c.imagePath != null}" th:src="@{'/' + ${#strings.substring(c.imagePath, c.imagePath.lastIndexOf('/') + 1)}}"
+           alt="Complaint Image" width="120" height="80">
+      <span th:if="${c.imagePath == null}">No Image</span>
+    </td>
+
+
+    <td>
+      <form method="post" action="/panchayath/updateStatus">
+        <input type="hidden" name="complaintId" th:value="${c.id}">
+        <select name="status">
+          <option th:selected="${c.status.name() == 'PENDING'}" value="Pending">Pending</option>
+          <option th:selected="${c.status.name() == 'IN_PROGRESS'}" value="In Progress">In Progress</option>
+          <option th:selected="${c.status.name() == 'RESOLVED'}" value="Resolved">Resolved</option>
+        </select>
+        <button type="submit">Update</button>
+      </form>
+    </td>
+
+    <td th:text="${c.individual.email}"></td>
+
+
+    <td>
+      <button type="button" th:onclick="'showMap(' + ${c.latitude} + ',' + ${c.longitude} + ')'">Map</button>
+    </td>
+
+
+    <td>
+      <form method="post" action="/panchayath/sendMail">
+        <input type="hidden" name="toEmail" th:value="${c.individual.email}">
+        <input type="hidden" name="subject" th:value="'Regarding Your Complaint ID: ' + ${c.id}">
+        <textarea name="message" placeholder="Write message..." required></textarea>
+        <button type="submit">Send</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<div id="map"></div>
+
+<script>
+  function showMap(lat, lon){
+    const mapDiv = document.getElementById("map");
+    mapDiv.innerHTML = ""; // reset
+    const map = L.map(mapDiv).setView([lat, lon], 14);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19
+    }).addTo(map);
+    L.marker([lat, lon]).addTo(map);
+  }
+</script>
+
+</body>
+</html>

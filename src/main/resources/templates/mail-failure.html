@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mail Failed - One Voice</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --teal: #00B5B5;
+            --orange: #FF6E2F;
+            --navy: #0C3A63;
+            --glass: rgba(255,255,255,0.06);
+        }
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #0e0e0e;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .container {
+            text-align: center;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.6);
+        }
+        h1 {
+            color: #FF6E2F;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: rgba(255,255,255,0.85);
+        }
+        a {
+            text-decoration: none;
+            padding: 12px 24px;
+            background: linear-gradient(90deg, var(--teal), var(--orange));
+            color: #fff;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: transform 0.2s;
+        }
+        a:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Oops! Mail Failed 😞</h1>
+    <p>There was a problem sending the email. Please try again.</p>
+    <a href="/panchayath/complaints">Back to Complaints</a>
+</div>
+</body>
+</html>

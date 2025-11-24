@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panchayath Register - One Voice</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+          --teal: #00B5B5;
+          --orange: #FF6E2F;
+          --navy: #0C3A63;
+          --glass: rgba(255,255,255,0.06);
+        }
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+        body,html{height:100%;background:#0e0e0e;color:#fff;overflow:hidden}
+        .container{display:flex;align-items:center;justify-content:center;height:100vh;width:100%;background:radial-gradient(circle at top left,#151515 0%,#0e0e0e 70%);position:relative}
+        .register-box{background:var(--glass);padding:40px;border-radius:22px;width:440px;box-shadow:0 12px 32px rgba(0,0,0,0.6);backdrop-filter:blur(14px);animation:fadeInUp 1s ease both}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+        .register-box h2{text-align:center;margin-bottom:25px;font-size:1.8rem;font-weight:700;background:linear-gradient(90deg,var(--teal),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .input-group{margin-bottom:18px}
+        .input-group label{display:block;font-size:0.9rem;margin-bottom:6px;font-weight:600;color:#eee}
+        .input-group input{width:100%;padding:12px;border:none;border-radius:10px;background:rgba(255,255,255,0.12);color:#fff;font-size:0.95rem}
+        .input-group input:focus{outline:2px solid var(--teal)}
+        .btn{width:100%;padding:14px;border:none;border-radius:12px;background:linear-gradient(90deg,var(--teal),var(--orange));font-size:1rem;font-weight:700;color:#fff;cursor:pointer;transition:transform 0.2s;margin-top:10px}
+        .btn:hover{transform:scale(1.04)}
+        .links{text-align:center;margin-top:20px}
+        .links a{color:var(--orange);text-decoration:none;font-size:0.9rem;font-weight:600}
+        .links a:hover{text-decoration:underline}
+        .side-banner{position:absolute;left:50px;top:50%;transform:translateY(-50%);max-width:420px}
+        .side-banner img{width:120px;margin-bottom:18px;filter:drop-shadow(0 6px 12px rgba(0,0,0,0.5))}
+        .side-banner h1{font-size:2rem;font-weight:700;margin-bottom:12px;background:linear-gradient(90deg,var(--teal),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .side-banner p{font-size:1rem;opacity:0.9;line-height:1.5}
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="side-banner">
+        <img src="/images/logocircle.jpg" alt="One Voice logo">
+        <h1>Panchayath Register</h1>
+        <p>"Authorized entry for Panchayaths — secure your village’s digital access with One Voice."</p>
+    </div>
+
+    <div class="register-box">
+        <h2>Create Panchayath Account 🏢</h2>
+        <form id="registerForm">
+            <div class="input-group">
+                <label for="name">Panchayath Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="input-group">
+                <label for="email">Email (Official)</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="input-group">
+                <label for="phone">Phone</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="input-group">
+                <label for="oneVoiceId">OneVoicePanchayath ID</label>
+                <input type="text" id="oneVoiceId" name="oneVoiceId" placeholder="e.g. OVP12345" required>
+            </div>
+            <div class="input-group">
+                <label for="otp">OTP</label>
+                <input type="text" id="otp" name="otp" placeholder="Enter OTP after receiving">
+            </div>
+            <button type="button" class="btn" onclick="sendOtp()">Send OTP</button>
+            <button type="submit" class="btn">Register</button>
+        </form>
+        <div class="links">
+            <p>Already registered? <a href="panchayath-login.html">Login here</a></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Send OTP function
+    async function sendOtp() {
+      const email = document.getElementById("email").value;
+      const oneVoiceId = document.getElementById("oneVoiceId").value;
+
+      if (!email || !oneVoiceId) {
+        alert("⚠️ Please enter Email and OneVoice ID first.");
+        return;
+      }
+
+      try {
+        const res = await fetch(`/panchayath-api/send-otp?email=${encodeURIComponent(email)}&oneVoiceId=${encodeURIComponent(oneVoiceId)}`, {
+          method: "POST"
+        });
+
+        // Check for valid JSON
+        const text = await res.text();
+        const data = JSON.parse(text);
+
+        alert("✅ " + (data.message || "OTP sent successfully!"));
+      } catch (err) {
+        alert("❌ Error sending OTP: " + err);
+      }
+    }
+
+    // Register Panchayath function
+    async function registerPanchayath(event) {
+      event.preventDefault();
+
+      const payload = {
+        otp: document.getElementById("otp").value,
+        email: document.getElementById("email").value,
+        panchayath: {
+          name: document.getElementById("name").value,
+          email: document.getElementById("email").value,
+          phone: document.getElementById("phone").value,
+          password: document.getElementById("password").value,
+          oneVoicePanchayathId: document.getElementById("oneVoiceId").value,
+          role: "PANCHAYATH"
+        }
+      };
+
+      try {
+        const res = await fetch("/panchayath-api/verify-otp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const text = await res.text();
+        const data = JSON.parse(text);
+
+        if (res.ok) {
+          alert("✅ " + (data.message || "Panchayath registered successfully!"));
+          window.location.href = "panchayath-login.html";
+        } else {
+          alert("❌ Registration failed: " + (data.error || "Unknown error"));
+        }
+      } catch (err) {
+        alert("❌ Error during registration: " + err);
+      }
+    }
+
+    document.getElementById("registerForm").addEventListener("submit", registerPanchayath);
+</script>
+</body>
+</html>
